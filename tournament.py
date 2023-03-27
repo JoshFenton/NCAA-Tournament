@@ -1,4 +1,5 @@
 from inspect import getmembers
+import pandas as pd
 
 class game:
     def __init__(self, region, rnd, index, top_from=None, bottom_from=None, winner=None,
@@ -37,12 +38,15 @@ class game:
             seed = self.top_seed
         else:
             seed = self.bottom_seed
-        if self.advance_to.top_from == self:
-            self.advance_to.top_team = team
-            self.advance_to.top_seed = seed
+        if self.round != "finals":
+            if self.advance_to.top_from == self:
+                self.advance_to.top_team = team
+                self.advance_to.top_seed = seed
+            else:
+                self.advance_to.bottom_team = team
+                self.advance_to.bottom_seed = seed
         else:
-            self.advance_to.bottom_team = team
-            self.advance_to.bottom_seed = seed
+            print("Congratulations! {} just won the championship!".format(self.winner))
     
     def set_score_top(self):
         self.top_score = input("How many points did {} score?".format(self.top_team))
@@ -57,6 +61,28 @@ class game:
             self.set_winner(self.top_team)
         else:
             self.set_winner(self.bottom_team)
+            
+    def __str__(self):
+        if self.winner == None:
+            if (self.top_team != None) & (self.bottom_team != None):
+                return "This is a game in the {} region in the {} between {} and {}. The game has not been played yet.".format(self.region, self.round, self.top_team, self.bottom_team)
+            else:
+                return "This is a game in the {} region in the {}. The matchup has not been set yet.".format(self.region, self.round)
+        else:
+            return "This was a game in the {} region in the {}. The matchup was between {}, who scored {} points, and {}, who scored {} points. {} won.".format(self.region, self.round, self.top_team, self.top_score, self.bottom_team, self.bottom_score, self.winner)
+
+"""
+Rounds: round of 64, round of 32, sweet sixteen, elite eight, semifinals, finals
+"""
+
+class ncaa_tournament:
+    def __init__(self, list_of_teams, regions):
+        pass
+
+"""
+TODO
+build ncaa_tournament class using exec()
+"""
         
 game_1 = game("East", 32, 1)
 game_2 = game("East", 16, 1, bottom_from=game_1)
