@@ -75,13 +75,98 @@ class game:
 Rounds: round of 64, round of 32, sweet sixteen, elite eight, semifinals, finals
 """
 
+teams = ["Alabama",
+         "Texas A&M-CC",
+         "Maryland",
+         "West Virginia",
+         "San Diego St",
+         "Charleston",
+         "Virginia",
+         "Furman",
+         "Creighton",
+         "NC State",
+         "Baylor",
+         "UCSB",
+         "Missouri",
+         "Utah State",
+         "Arizona",
+         "Princeton",
+         "Purdue",
+         "Farleigh Dickinson",
+         "Memphis",
+         "FAU",
+         "Duke",
+         "Oral Roberts",
+         "Tennessee",
+         "Louisiana",
+         "Kentucky",
+         "Providence",
+         "Kansas St",
+         "Montana St",
+         "Michigan St",
+         "USC",
+         "Marquette",
+         "Vermont",
+         "Houston",
+         "N Kentucky",
+         "Iowa",
+         "Auburn",
+         "Miami",
+         "Drake",
+         "Indiana",
+         "Kent State",
+         "Iowa State",
+         "Pittsburgh",
+         "Xavier",
+         "Kennesaw St",
+         "Texas A&M",
+         "Penn State",
+         "Texas",
+         "Colgate",
+         "Kansas",
+         "Howard",
+         "Arkansas",
+         "Illinois",
+         "Saint Marys",
+         "VCU",
+         "UConn",
+         "Iona",
+         "TCU",
+         "Arizona State",
+         "Gonzaga",
+         "Grand Canyon",
+         "Northwestern",
+         "Boise St",
+         "UCLA",
+         "UNC Asheville"]
+
 class ncaa_tournament:
-    def __init__(self, list_of_teams, regions):
-        pass
+    def __init__(self, teams):
+        games = pd.read_csv('games.csv')
+        for i in range(len(games)):
+            if i <= 31:
+                exec("self.game_{}_{}_{} = game(region = '{}', rnd='{}', index={}, top_team='{}', bottom_team='{}', top_seed={}, bottom_seed={})".format(games.region[i], games.rnd[i], games.indx[i], str(games.region_name[i]), games.round_str[i], games.indx[i], teams[2*i], teams[(2*i)+1], games.top_seed[i], games.bottom_seed[i]))
+            else:
+                exec("self.game_{}_{}_{} = game(region = '{}', rnd='{}', index={}, top_from=self.{}, bottom_from=self.{})".format(games.region[i], games.rnd[i], games.indx[i], str(games.region_name[i]), games.round_str[i], games.indx[i], games.top_from[i], games.bottom_from[i]))
 
 """
 TODO
-build ncaa_tournament class using exec()
+    --> find a way to save game progress as it is put in so you don't have to "play" every game in
+        the tournament every time you initialize the tournament
+        --> maybe a separate spreadsheet? With an update function to populate the tournament with
+            games that have already been played?
+            --> need separate save files so we can start from scratch if we want to.
+    
+    --> build the complete GUI for the tournament
+        --> place all games in the entire frame
+        --> build out the function to "play" the game in a different window/tab that then updates
+            the results in the original game frame
+            --> function should also advance the winner to the next game
+    
+    --> fit all created Game classes in the tournament to their respective gmae frame in the GUI
+        --> maybe need to keep a list in the ncaa_tournament class that keeps track of all the
+            games created in it so we can iterate through it
+        --> build class methods to update the GUI and Games in the tournament at the same time
 """
         
 game_1 = game("East", 32, 1)
